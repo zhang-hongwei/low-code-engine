@@ -1,6 +1,7 @@
 import type { StateCreator } from 'zustand/vanilla';
 import { EditorStore } from './store';
 import { ComponentNode } from './types';
+import { findParent } from "@/app/utils";
 export interface EditorAction {
 
 
@@ -8,6 +9,7 @@ export interface EditorAction {
     updateProps: (id: string, props: Record<string, any>) => void
     setComponentTree: (tree: ComponentNode) => void
     addComponent: (parentId: string, component: ComponentNode) => void;
+    moveComponent: (dragId: string, targetId: string) => void;
 }
 
 export const EditorSlice: StateCreator<
@@ -61,4 +63,30 @@ export const EditorSlice: StateCreator<
 
         set((state) => ({ componentTree: insert(state.componentTree) }));
     },
+
+    moveComponent: (dragId, targetId) => {
+        set((state) => {
+            const parent = findParent(state.componentTree, dragId)
+            if (!parent) return {}
+
+            const siblings = parent.children || []
+            const fromIndex = siblings.findIndex((c) => c.id === dragId)
+            const toIndex = siblings.findIndex((c) => c.id === targetId)
+
+            if (fromIndex === -1 || toIndex === -1) return {}
+
+            const reordered = [...siblings]
+            const [moved] = reordered.splice(fromIndex, 1)
+            reordered.splice(toIndex, 0, moved)
+
+            const updatedParent = {
+                ...parent,
+                children: reordered,
+            }
+
+            return {
+                componentTree: replaceNode(state.componentTree, updatedParent),
+            }
+        })
+    }
 });

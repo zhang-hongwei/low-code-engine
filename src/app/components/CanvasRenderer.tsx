@@ -4,6 +4,10 @@ import { ComponentNode, } from '../store/editor/types'
 import clsx from 'clsx';
 import { useDroppable } from '@dnd-kit/core';
 
+import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
+import { SortableItem } from './SortableItem'
+
+
 export const CanvasRenderer = ({ node }: { node: ComponentNode }) => {
     const Component = componentRegistry[node.type]
     if (!Component) return <div style={{ color: 'red' }}>未知组件: {node.type}</div>
@@ -23,6 +27,7 @@ export const CanvasRenderer = ({ node }: { node: ComponentNode }) => {
                     <Component
                         props={{
                             ...node.props,
+                            type: 'existing-component',
                             className: clsx(
                                 {
                                     'grid grid-cols-1': node.id === 'root',
@@ -30,12 +35,18 @@ export const CanvasRenderer = ({ node }: { node: ComponentNode }) => {
                                 }
                             )
                         }}
-
-
                     >
-                        {node.children?.map((child) => (
+                        <SortableContext items={node.children?.map(c => c.id) ?? []} strategy={rectSortingStrategy}>
+                            {node.children?.map(child => (
+                                <SortableItem key={child.id} id={child.id}>
+                                    <CanvasRenderer node={child} />
+                                </SortableItem>
+                            ))}
+                        </SortableContext>
+
+                        {/* {node.children?.map((child) => (
                             <CanvasRenderer key={child.id} node={child} />
-                        ))}
+                        ))} */}
                     </Component>
                 </div>
             </ComponentWrapper>
@@ -46,10 +57,18 @@ export const CanvasRenderer = ({ node }: { node: ComponentNode }) => {
 
     return (
         <ComponentWrapper node={node}>
-            <Component props={{ ...node.props }}>
-                {node.children?.map(child => (
+            <Component props={{ ...node.props, type: 'existing-component', }}>
+
+                <SortableContext items={node.children?.map(c => c.id) ?? []} strategy={rectSortingStrategy}>
+                    {node.children?.map(child => (
+                        <SortableItem key={child.id} id={child.id}>
+                            <CanvasRenderer node={child} />
+                        </SortableItem>
+                    ))}
+                </SortableContext>
+                {/* {node.children?.map(child => (
                     <CanvasRenderer key={child.id} node={child} />
-                ))}
+                ))} */}
             </Component>
         </ComponentWrapper>
     )
