@@ -1,5 +1,5 @@
-import { useEditorStore } from '../store/editor'
-import { ComponentNode } from '../store/editor/types'
+import { useEditorStore } from '../../../store/editor'
+import { ComponentNode } from '../../../store/editor/types'
 import { useDraggable } from '@dnd-kit/core'
 import clsx from 'clsx'
 

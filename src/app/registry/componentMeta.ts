@@ -18,7 +18,12 @@ export const componentMetaList: ComponentMeta[] = [
         type: 'container',
         name: '容器',
         defaultProps: {
-            style: { padding: '10px', border: '1px dashed #aaa', },
+            style: {
+                padding: '10px',
+                border: '1px dashed #aaa',
+
+
+            },
         },
     },
 ]

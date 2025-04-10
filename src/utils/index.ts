@@ -1,4 +1,4 @@
-import { ComponentNode } from '@/app/store/editor/types'
+import { ComponentNode } from '@/store/editor/types'
 
 export const findParent = (
     node: ComponentNode,

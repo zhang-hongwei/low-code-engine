@@ -2,12 +2,12 @@
 import Left from "./left"
 import Right from "./right"
 import { Box } from "@mui/material";
-import { EditorCanvas } from '@/app/components/editor/EditorCanvas'
-import { EditorShell } from "../components/editor/EditorShell";
+import { DNDProvider } from "./center/DNDProvider";
+import Center from './center'
 
 const EditorPage = () => {
     return (
-        <EditorShell>
+        <DNDProvider>
             <Box className="flex flex-row justify-between h-full"
                 sx={{
                     display: 'grid',
@@ -16,13 +16,11 @@ const EditorPage = () => {
             >
                 <Left />
 
-                <EditorCanvas />
+                <Center />
 
                 <Right />
             </Box>
-        </EditorShell>
-
-
+        </DNDProvider>
     );
 };
 

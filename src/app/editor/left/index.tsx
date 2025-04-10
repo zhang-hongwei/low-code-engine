@@ -2,7 +2,7 @@
 import { useDrag } from 'react-dnd';
 import { Box } from "@mui/material";
 
-import { ComponentPalette } from '@/app/components/editor/ComponentPalette'
+import { ComponentPalette } from '@/app/editor/center/ComponentPalette'
 
 
 const Left = () => {

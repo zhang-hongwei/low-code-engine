@@ -1,4 +1,4 @@
-import { Button, Container } from '../components/builtin'
+import { Button, Container } from '../../components/builtin'
 
 export const componentRegistry: Record<
     string,

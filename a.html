@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .grid-container {
+            flex: 1;
+            min-height: 300px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            display: grid;
+        }
+
+        .grid-container div {
+            background-color: rgba(0, 128, 255, 0.2);
+            border: 1px dashed #0080ff;
+        }
+
+        .controls {
+            flex: 1;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .controls div {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #0080ff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #0066cc;
+        }
+
+        #code-output {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <!DOCTYPE html>
+    <html lang="zh">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CSS Grid 生成器</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="grid-container" id="grid"></div>
+            <div class="controls">
+                <h2>CSS Grid 生成器</h2>
+                <div>
+                    <label>列数配置（用空格分隔，如 "1fr 200px"）:</label>
+                    <input type="text" id="columns" placeholder="1fr 1fr">
+                </div>
+                <div>
+                    <label>行数配置（用空格分隔，如 "100px auto"）:</label>
+                    <input type="text" id="rows" placeholder="100px 100px">
+                </div>
+                <div>
+                    <label>列间距:</label>
+                    <input type="text" id="column-gap" placeholder="10px">
+                </div>
+                <div>
+                    <label>行间距:</label>
+                    <input type="text" id="row-gap" placeholder="10px">
+                </div>
+                <button onclick="updateGrid()">更新网格</button>
+                <button onclick="generateCode()">生成代码</button>
+                <pre id="code-output"></pre>
+            </div>
+        </div>
+        <script src="script.js"></script>
+    </body>
+
+    </html>
+
+
+    <script>
+        function updateGrid() {
+            const grid = document.getElementById('grid');
+            const columns = document.getElementById('columns').value || '1fr 1fr';
+            const rows = document.getElementById('rows').value || '100px 100px';
+            const columnGap = document.getElementById('column-gap').value || '10px';
+            const rowGap = document.getElementById('row-gap').value || '10px';
+
+            // 应用网格样式
+            grid.style.gridTemplateColumns = columns;
+            grid.style.gridTemplateRows = rows;
+            grid.style.columnGap = columnGap;
+            grid.style.rowGap = rowGap;
+
+            // 清空现有网格内容
+            grid.innerHTML = '';
+
+            // 自动填充网格项（示例）
+            const colCount = columns.split(' ').length;
+            const rowCount = rows.split(' ').length;
+            for (let i = 0; i < colCount * rowCount; i++) {
+                const div = document.createElement('div');
+                grid.appendChild(div);
+            }
+        }
+
+        function generateCode() {
+            const columns = document.getElementById('columns').value || '1fr 1fr';
+            const rows = document.getElementById('rows').value || '100px 100px';
+            const columnGap = document.getElementById('column-gap').value || '10px';
+            const rowGap = document.getElementById('row-gap').value || '10px';
+
+            const css = `.grid {
+        display: grid;
+        grid-template-columns: ${columns};
+        grid-template-rows: ${rows};
+        column-gap: ${columnGap};
+        row-gap: ${rowGap};
+      }`;
+
+            const html = `<div class="grid">
+        <!-- 添加你的网格项 -->
+      </div>`;
+
+            const output = `CSS:\n${css}\n\nHTML:\n${html}`;
+            document.getElementById('code-output').textContent = output;
+        }
+
+        // 初始化默认网格
+        updateGrid();
+
+    </script>
+</body>
+
+</html>
